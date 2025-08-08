@@ -1408,6 +1408,7 @@ jQuery(function($) {
         }
  
       });
+	  $("#navbar-menu").on('hide.bs.collapse', function() { alert('Closing…'); })
 
 	  	$( '#menu-menu-siltac>li a[data-target]' ).off("click").on( 'click', function(e){
 			e.preventDefault();
@@ -1420,7 +1421,13 @@ jQuery(function($) {
 			// Run a scroll animation to the position of the element which has the same id like the href value.
 			$( 'html, body' ).animate({
 					scrollTop: $( `[data-id="${focus_}"]` ).offset().top
-			}, '300' );
+			}, '300' )
+			.promise()
+			.done(function() {
+				if ($("#navbar-menu").hasClass("show")){
+					$("#navbar-menu>button:first").trigger("click");
+				}
+			});
 				
 			// Prevent the browser from showing the attribute name of the clicked link in the address bar
 			e.preventDefault();
