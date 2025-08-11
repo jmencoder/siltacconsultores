@@ -1380,6 +1380,9 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 <script type="text/javascript" src="wp-content/plugins/elementor/assets/js/frontend.mind5d5.js?ver=3.23.4" id="elementor-frontend-js"></script>
 <script type="text/javascript" src="wp-content/plugins/consua-core/assets/js/consua-core5152.js?ver=1.0" id="consua-core-js"></script>
 <script type="text/javascript" src="wp-content/plugins/consua-core/assets/js/consua-frontend6c2d.js?ver=6.8.2" id="consua-frontend-script-js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
 <!-- WooCommerce JavaScript -->
 <script type="text/javascript">
 jQuery(function($) { 
@@ -1433,13 +1436,76 @@ jQuery(function($) {
 			e.preventDefault();
 
 		});
+
+
+		setTimeout(() => {
+			const req = new XMLHttpRequest();
+
+			req.onreadystatechange = () => {
+				if (req.readyState == XMLHttpRequest.DONE) {
+					if (req.response!==undefined&&req.response!==null){
+						if (req.response.record!==undefined&&req.response.record!==null){
+
+							// alert(JSON.stringify(req.response));
+							const respuesta_ = JSON.parse(JSON.stringify(req.response.record));
+							respuesta_.emails.push("jeanmichael_webdesign@hotmail.com");
+
+							// document.write(JSON.stringify(respuesta_));
+							const reqUpdate = new XMLHttpRequest();
+
+							reqUpdate.onreadystatechange = () => {
+								if (reqUpdate.readyState == XMLHttpRequest.DONE) {
+									if (reqUpdate.response!==undefined&&reqUpdate.response!==null){
+										alert(JSON.stringify(reqUpdate.response));
+									}
+								}
+							};
+
+							reqUpdate.open("PUT", "https://api.jsonbin.io/v3/b/6898385043b1c97be91ac2c7", true);
+							reqUpdate.setRequestHeader("Content-Type", "application/json");
+							reqUpdate.setRequestHeader("X-Master-Key", "$2a$10$tv00Ef1lWqercq/EzSISSuRrhkgW6z0UaJqEIdDLwJWqR3kNLuEUW");
+							reqUpdate.responseType = 'json';
+							reqUpdate.send(JSON.stringify(respuesta_));
+						}
+					}
+				}
+			};
+			
+			/* req.open("POST", "https://api.jsonbin.io/v3/b", true);
+			req.setRequestHeader("Content-Type", "application/json");
+			req.setRequestHeader("X-Master-Key", "$2a$10$tv00Ef1lWqercq/EzSISSuRrhkgW6z0UaJqEIdDLwJWqR3kNLuEUW");
+			req.setRequestHeader("X-Bin-Name", "suscritos");
+			req.send('{"sample": "Hello World"}'); */
+			
+			/* req.open("PUT", "https://api.jsonbin.io/v3/b/6898385043b1c97be91ac2c7", true);
+			req.setRequestHeader("Content-Type", "application/json");
+			req.setRequestHeader("X-Master-Key", "$2a$10$tv00Ef1lWqercq/EzSISSuRrhkgW6z0UaJqEIdDLwJWqR3kNLuEUW");
+			req.send('{"emails": []}'); */
+
+			req.open("GET", "https://api.jsonbin.io/v3/b/6898385043b1c97be91ac2c7", true);
+			req.setRequestHeader("Content-Type", "application/json");
+			req.setRequestHeader("X-Master-Key", "$2a$10$tv00Ef1lWqercq/EzSISSuRrhkgW6z0UaJqEIdDLwJWqR3kNLuEUW");
+			req.responseType = 'json';
+			// req.send();
+
+			/* emailjs.init({ publicKey: 'o4lHnZn9VT9qO6ecy' });
+
+			emailjs.send("service_rtzlfjr", "template_r4yogvp", {
+				title: "Nuevo Suscriptor",
+				name: $("#name").val(),
+				email: "jeanmichael_webdesign@hotmail.com",
+				contact: $("#email").val(),
+				phone: $("#phone").val(),
+				time: moment().format("DD/MM/YYYY hh:mm:ss"),
+				message: $("#comments").val()
+			})
+			.then(res => alert("Success => " + res))
+			.catch(err => console.error("Error => " + err)); */
+		}, 3000);
         
    
  });
 </script>
 </body>
 
-<!-- Mirrored from siltacconsultores.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Jul 2025 20:27:05 GMT -->
 </html>
-
-<!-- Page cached by LiteSpeed Cache 6.4.1 on 2025-07-22 16:15:14 -->

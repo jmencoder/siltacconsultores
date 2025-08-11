@@ -246,7 +246,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};
 	                    <div class="attr-nav">
 	                        <ul>
 	                        	<li class="button">
-	                            	<a href="https://validthemes.net/themeforest/wp/consua/about-us/">WHATSAPP</a>
+	                            	<a href="http://wa.me/50494317190" target="blank">WhatsApp</a>
 	                        	</li>
 	                        		                            	                        </ul>
 	                    </div>
@@ -368,7 +368,7 @@ Para obtener más información sobre nuestro trabajo y cómo podemos asistirle, 
 </div>
 <div class="row">
     <div class="col-lg-12">
-        <button type="submit" name="submit" id="submit"><i class="fa fa-paper-plane"></i> Enviar</button>
+        <button type="button" name="submit" id="submit"><i class="fa fa-paper-plane"></i> Enviar</button>
     </div>
 </div><div class="wpcf7-response-output" aria-hidden="true"></div>
 </form>
@@ -679,6 +679,8 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 <script type="text/javascript" src="../wp-content/plugins/elementor/assets/js/frontend.mind5d5.js?ver=3.23.4" id="elementor-frontend-js"></script>
 <script type="text/javascript" src="../wp-content/plugins/consua-core/assets/js/consua-core5152.js?ver=1.0" id="consua-core-js"></script>
 <script type="text/javascript" src="../wp-content/plugins/consua-core/assets/js/consua-frontend6c2d.js?ver=6.8.2" id="consua-frontend-script-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
 <!-- WooCommerce JavaScript -->
 <script type="text/javascript">
 jQuery(function($) { 
@@ -707,6 +709,52 @@ jQuery(function($) {
         }
  
       });
+
+	  $("#submit").off("click").on("click", function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		
+		$(".respuesta-exitosa").removeClass("alert alert-danger respuesta-exitosa mt-4").addClass("wpcf7-response-output");
+		const control = this;
+		$(control).addClass("disabled").attr("disabled", "si").text("Enviando").prepend(`<i class="fa fa-spinner fa-spin me-2"></i>`);
+
+		
+		if ($("#name").val()===""||
+		$("#email").val()===""||
+		$("#phone").val()===""||
+		$("#comments").val()==="")
+		{
+			$(control).removeClass("disabled").removeAttr("disabled").text("Enviar").prepend(`<i class="fa fa-paper-plane me-2"></i>`);
+			$(".wpcf7-response-output").addClass("alert alert-danger respuesta-exitosa mt-4").removeClass("wpcf7-response-output").text("Por favor llene los campos solicitados.");
+			return;
+		}
+
+		emailjs.init({ publicKey: 'o4lHnZn9VT9qO6ecy' });
+
+		emailjs.send("service_rtzlfjr", "template_r4yogvp", {
+			title: "Nuevo Suscriptor",
+			name: $("#name").val(),
+			email: "gerenciageneral@sitacconsultores.com",
+			contact: $("#email").val(),
+			phone: $("#phone").val(),
+			time: moment().format("DD/MM/YYYY hh:mm:ss"),
+			message: $("#comments").val()
+		})
+		.then(function(res) {
+			//alert("Success => " + res);
+			$("#name").val("");
+			$("#email").val("");
+			$("#phone").val("");
+			$("#comments").val("");
+			$(control).removeClass("disabled").removeAttr("disabled").text("Enviar").prepend(`<i class="fa fa-paper-plane me-2"></i>`);
+			$(".wpcf7-response-output").addClass("alert alert-success respuesta-exitosa mt-4").removeClass("wpcf7-response-output").text("Mensaje enviado exitosamente!")
+		})
+		.catch(function(err) {
+			//alert("Err => " + err);
+			$(control).removeClass("disabled").removeAttr("disabled").text("Enviar").prepend(`<i class="fa fa-paper-plane me-2"></i>`);
+			$(".wpcf7-response-output").addClass("alert alert-danger respuesta-exitosa mt-4").removeClass("wpcf7-response-output").text("No hemos conseguido enviar tú mensaje, intenta de nuevo.")
+		});
+	  });
         
    
  });
